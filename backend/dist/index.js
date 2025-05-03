@@ -1,0 +1,35 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.client = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const openai_1 = __importDefault(require("openai"));
+dotenv_1.default.config();
+const user_1 = require("./Routes/user");
+const raiting_1 = require("./Routes/raiting");
+const contest_1 = require("./Routes/contest");
+const programinglang_1 = require("./Routes/programinglang");
+const accuracy_1 = require("./Routes/accuracy");
+const count_1 = require("./Routes/count");
+const verdict_1 = require("./Routes/verdict");
+const message_1 = require("./Routes/message");
+const app = (0, express_1.default)();
+app.use(express_1.default.json());
+app.use((0, cors_1.default)());
+app.use("/api/v1/message", message_1.messageRoute);
+app.use("/api/v1/userinfo", user_1.userinfoRoute);
+app.use("/api/v1/rating", raiting_1.userratingRoute);
+app.use("/api/v1/contest", contest_1.usercontestRoute);
+app.use("/api/v1/programming-lang", programinglang_1.programinglangRoute);
+app.use("/api/v1/accuracy", accuracy_1.accuracyRoute);
+app.use("/api/v1/verdict", verdict_1.VerdictRoute);
+app.use("/api/v1/count", count_1.countRoute);
+exports.client = new openai_1.default({
+    baseURL: process.env["BASE_URL"],
+    apiKey: process.env["AI_API_KEY"],
+});
+app.listen(3001);
